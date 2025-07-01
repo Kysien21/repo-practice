@@ -1,0 +1,160 @@
+/* === Base Containers === */
+.keywordmatch-container,
+.keywordskillmatch-container,
+.workhistory-container,
+.workhistoryskillmatch-container,
+.qualification-container,
+.relevance-container,
+.consistency-container,
+.spellinggrammar-container {
+  position: fixed;
+  left: 445px;
+  width: 13rem;
+  height: 13rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border: 2px solid #c2bebe;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding-bottom: 20px;
+}
+
+.keywordmatch-container,
+.workhistory-container,
+.qualification-container,
+.spellinggrammar-container {
+  top: 120px;
+}
+
+.keywordskillmatch-container,
+.workhistoryskillmatch-container,
+.relevance-container,
+.consistency-container {
+  top: 380px;
+}
+
+.keywordmatch-container h1,
+.keywordskillmatch-container h1,
+.workhistory-container h1,
+.workhistoryskillmatch-container h1,
+.qualification-container h1,
+.relevance-container h1,
+.consistency-container h1,
+.spellinggrammar-container h1 {
+  font-size: 15px;
+  color: #133970;
+  line-height: 60px;
+}
+
+.progress-keywordmatch,
+.progress-keywordskillmatch,
+.progress-workhistory,
+.progress-workhistoryskillmatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.keywordmatch-circle,
+.keywordskillmatch-circle,
+.workhistory-circle,
+.workhistoryskillmatch-circle,
+.qualification-circle,
+.relevance-circle,
+.consistency-circle,
+.spellinggrammar-circle {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progress-num {
+  position: absolute;
+  top: 53px;
+  left: 48px;
+  font-size: 13px;
+}
+
+.comment-keywordmatch-container,
+.comment-keywordskillmatch-container,
+.comment-workhistory-container,
+.comment-workhistoryskillmatch-container,
+.comment-qualification-container,
+.comment-relevance-container,
+.comment-consistency-container,
+.comment-spellinggrammar-container {
+  position: fixed;
+  left: 651px;
+  width: 32.1rem;
+  height: 13rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fff;
+  border: 2px solid #c2bebe;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding: 32px 38px 25px 38px;
+}
+
+.comment-keywordmatch-container,
+.comment-workhistory-container,
+.comment-qualification-container,
+.comment-spellinggrammar-container {
+  top: 120px;
+}
+
+.comment-keywordskillmatch-container,
+.comment-workhistoryskillmatch-container,
+.comment-relevance-container,
+.comment-consistency-container {
+  top: 380px;
+}
+
+.comment-keywordmatch-container h1,
+.comment-keywordskillmatch-container h1,
+.comment-workhistory-container h1,
+.comment-workhistoryskillmatch-container h1,
+.comment-qualification-container h1,
+.comment-relevance-container h1,
+.comment-consistency-container h1,
+.comment-spellinggrammar-container h1 {
+  font-size: 15px;
+  color: #133970;
+  margin-bottom: 20px;
+}
+
+.keywordmatch-comment,
+.keywordskillmatch-comment,
+.workhistory-comment,
+.workhistoryskillmatch-comment,
+.qualification-comment,
+.relevance-comment,
+.consistency-comment,
+.spellinggrammar-comment {
+  width: 100%;
+  height: 100%;
+  background-color: #cecece;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.arrow-controls .left-arrow {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(120px, 280px);
+  width: 35px;
+}
+
+.arrow-controls .right-arrow {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(170px, 280px);
+  width: 35px;
+}

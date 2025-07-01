@@ -1,0 +1,39 @@
+.sidebar-container {
+  width: 220px;
+  height: 100%;
+  background-color: #3b7ce9;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding-top: 100px;
+  top: 0;
+  position: fixed;
+  gap: 50px;
+}
+
+.dashboard-title h2 {
+  font-size: 20px;
+  text-indent: 40px;
+}
+
+.dashboard-sidebar {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+
+.side-link {
+  display: block;
+  padding: 10px;
+  text-indent: 30px;
+  text-decoration: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+
+}
+
