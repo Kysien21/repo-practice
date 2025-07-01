@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const User = require('../models/User');
 const bcrypt = require('bcrypt');
 
 exports.signup = async(req, res) => {
@@ -30,8 +30,6 @@ exports.signup = async(req, res) => {
             Password: hashedPassword,
         })
 
-        console.log("Saving new user...")
-
         const savedUser = await user.save()
 
         res.status(201).json({ message: 'You created successfully', user: savedUser })
@@ -54,10 +52,18 @@ exports.login = async(req, res) => {
 
         if (!match) return res.status(400).json({ message: 'Invalid credentials' });
 
-        req.session.user = user;
+        req.session.user = {
+            _id: user._id,
+            role: user.role || 'user',
+            email: user.Email_Address
+        }
 
-        res.status(200).json({
-            message: 'Login successful'
+        return res.status(200).json({
+            message: 'Login successful',
+            user: {
+                role: user.role,
+                email: user.Email_Address
+            }
         });
     } catch (error) {
         res.status(500).json({ message: 'Login failed', error: error.message });

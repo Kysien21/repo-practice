@@ -24,11 +24,15 @@ exports.confirmAndDeleteOriginal = async(req, res) => {
             return res.status(404).json({ message: 'Resume not found' });
         }
 
+        if (!resume.originalFile) {
+            return res.status(400).json({ message: 'No file path found for this resume.' });
+        }
+
         const filePath = path.join(__dirname, '..', resume.originalFile);
+
         if (fs.existsSync(filePath)) {
             fs.unlinkSync(filePath);
         }
-
 
         resume.originalFile = null;
         await resume.save();

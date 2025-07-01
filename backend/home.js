@@ -3,12 +3,16 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const cors = require('cors');
 const path = require('path');
+const multer = require('multer')
+
+
 const loginRoute = require('./routes/login');
 const signupRoute = require('./routes/signup');
 const uploadRoute = require('./routes/upload');
 const analysisRoute = require('./routes/analysis');
 const resultRoute = require('./routes/result');
-const multer = require('multer')
+const adminRoute = require('./routes/admin');
+
 
 require('dotenv').config();
 
@@ -42,6 +46,8 @@ app.use(session({
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // Routes
+app.use('/', adminRoute)
+
 app.use('/', signupRoute)
 
 app.use('/', loginRoute)
@@ -59,6 +65,7 @@ const dbURI = 'mongodb+srv://project:aj09126366384@cluster1.gqpv0pu.mongodb.net/
 
 mongoose.connect(dbURI)
     .then((result) => {
+        console.log("connected")
         console.log('✅ Nakakonek sa MongoDB')
         app.listen(PORT, () => {
             console.log(`✅ Server running at http://localhost:${PORT}`);
