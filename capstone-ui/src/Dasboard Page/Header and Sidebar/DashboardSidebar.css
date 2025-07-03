@@ -9,11 +9,13 @@
   top: 0;
   position: fixed;
   gap: 50px;
+  z-index: 100;
+  transition: all 0.3s ease;
 }
 
 .dashboard-title h2 {
   font-size: 20px;
-  text-indent: 40px;
+  text-indent: 35px;
 }
 
 .dashboard-sidebar {
@@ -26,14 +28,41 @@
 }
 
 .side-link {
-  display: block;
-  padding: 10px;
-  text-indent: 30px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 10px 10px 35px;
   text-decoration: none;
   color: white;
   border-radius: 8px;
   cursor: pointer;
   font-size: 13px;
-
 }
 
+.icon {
+  width: 15px;
+  height: 15px;
+}
+
+@media (max-width: 1000px) {
+  .sidebar-container {
+    width: 60px;
+    padding-top: 90px;
+
+  }
+
+  .dashboard-title h2 {
+    display: none;
+  }
+
+  .dashboard-sidebar .side-link {
+    font-size: 0;
+    padding: 10px;
+    justify-content: center;
+  }
+
+  .dashboard-sidebar .icon {
+    width: 18px;
+    height: 18px;
+  }
+}

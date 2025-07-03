@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import "../Feedback.css";
+
+import { useEffect, useState } from "react";
 import { useWorkHistorySkillMatchFunction } from "./useWorkHistorySkillMatchFunction";
+
+import axios from "axios";
 
 function WorkHistorySkillMatch({ speed = 10 }) {
   const [target, setTarget] = useState(0);

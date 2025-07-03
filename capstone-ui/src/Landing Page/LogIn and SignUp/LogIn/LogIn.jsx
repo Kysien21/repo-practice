@@ -1,7 +1,9 @@
   import "./Login.css";
+
   import LogoIcon from "../../../assets/Logo.png";
   import GoogleIcon from "../../../assets/google.png";
   import FacebookIcon from "../../../assets/facebook.png";
+  
   import { useLogInFunction } from "./useLogInFunction";
 
   function Login() {

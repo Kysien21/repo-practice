@@ -1,7 +1,11 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import DashboardHeader from "../../Header and Sidebar/DashboardHeader";
 import DashboardSidebar from "../../Header and Sidebar/DashboardSidebar";
+
+import LeftArrowIcon from "../../../assets/Arrow left-circle.png";
+import RightArrowIcon from "../../../assets/Arrow right-circle.png";
+
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import KeywordMatch from "./Relevance to Job Description/KeywordMatch";
 import KeywordSkillMatch from "./Relevance to Job Description/KeywordSkillMatch";
@@ -11,9 +15,6 @@ import Qualification from "./Education/Qualification";
 import Relevance from "./Education/Relevance";
 import SpellingAndGrammar from "./Consistency & Accuracy/SpellingAndGrammar";
 import Consistency from "./Consistency & Accuracy/Consistency";
-
-import LeftArrowIcon from "../../../assets/Arrow left-circle.png";
-import RightArrowIcon from "../../../assets/Arrow right-circle.png";
 
 function Feedback() {
   const [step, setStep] = useState(0);
@@ -54,9 +55,9 @@ function Feedback() {
 
   return (
     <main className="feedback-container">
-      <DashboardSidebar />
       <DashboardHeader />
-
+      <DashboardSidebar />
+      
       <section className="feedback-content">{views[step]}</section>
 
       <div className="arrow-controls">

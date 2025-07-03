@@ -1,14 +1,16 @@
 import DashboardHeader from "../Header and Sidebar/DashboardHeader";
 import DashboardSidebar from "../Header and Sidebar/DashboardSidebar";
+
 import "./Result.css";
+
 import RightArrowIcon from "../../assets/right arrow.png";
 import DownloadIcon from "../../assets/Download.png";
 
 function Result() {
   return (
     <main>
-      <DashboardSidebar />
       <DashboardHeader />
+      <DashboardSidebar />
 
       <section>
         <div className="result-container">
@@ -25,6 +27,14 @@ function Result() {
               alt="Next Page"
             />
             <div className="result" />
+          </div>
+
+          <div className="picker-container">
+            <label className="option-picker">Choose your download format:</label>
+            <select className="select-box">
+              <option value="pdf">PDF</option>
+              <option value="docx">DOCX</option>
+            </select>
           </div>
 
           <button className="download-button">

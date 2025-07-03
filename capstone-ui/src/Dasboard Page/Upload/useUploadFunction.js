@@ -35,7 +35,7 @@ export function useUploadFunction() {
   };
 
   const resumeFileUpload = () => {
-    fileInputRef.current?.click();
+    fileInputRef.current.click();
   };
 
   const submitResumeUpload = async (e) => {
@@ -56,7 +56,7 @@ export function useUploadFunction() {
     formData.append("jobDescription", jobDescription);
 
 try {
-  const response = await axios.post("http://localhost:5000/upload", formData, {
+  const response = await axios.post("http://localhost:3000/api/upload", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

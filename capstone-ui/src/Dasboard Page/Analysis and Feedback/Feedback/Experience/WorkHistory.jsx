@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import "../Feedback.css";
+
+import { useEffect, useState } from "react";
 import { useWorkHistoryFunction } from "./useWorkHistoryFunction";
+
+import axios from "axios";
+
 
 function WorkHistory({ speed = 10 }) {
   const [target, setTarget] = useState(0);

@@ -1,54 +1,88 @@
 .result-container {
   position: fixed;
-  top: 120px;
-  left: 445px;
+  top: 105px;
+  left: 290px;
   bottom: 200px;
-  width: 45rem;
-  height: 30rem;
+  width: 63rem;
+  height: 32rem;  
   padding: 0 70px;
   background-color: #fff;
   border: 2px solid #c2bebe;
   border-radius: 10px;
 }
 
+
 .uploaded-and-result {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   position: relative;
-  top: 50px;
-  width: 100%;
-  height: 75%;
+  width: 85%;
+  height: 65%;
+  top: 5px;
+  left: 65px;
 }
 
 
 .result-text {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   position: relative;
-  top: 55px;
-  padding: 0 30px 0px 70px;
+  top: 25px;
+  padding-left: 50px;
+  padding-right: 20px;
 }
 
 .result-text h1 {
-  font-size: 17px;
+  font-size: 14px;
   color: #133970;
 }
 
 .uploaded,
 .result {
   background-color: #a6a6a6;
-  width: 35%;
+  width: 30%;
   height: 85%;
   margin-bottom: 35px;
   padding: 10px;
   font-size: 10px;
-  display: flex;
-  flex-direction: column;
+  margin: auto;
 }
 
 .right-arrow-icon {
   width: 50px;
+}
+
+.picker-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+  position: relative;
+  bottom: 20px;
+}
+
+.option-picker {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #1e3a8a;
+}
+
+.select-box {
+  padding: 8px;
+  width: 250px;
+  height: 30px;
+  font-size: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  color: #1e3a8a;
+  box-shadow: -1px 0 4px #00000033, 1px 0 4px #00000033;
+
+}
+
+.select-box option {
+  color: #1e3a8a;
 }
 
 .download-button {
@@ -57,15 +91,14 @@
   align-items: center;
   justify-content: center;
   gap: 3px;
-  width: 25%;
+  width: 15%;
   height: 40px;
   background-color: #133970;
   color: #fff;
   border: none;
   border-radius: 10px;
-  position: relative;
-  top: 30px;
-  left: 38%;
+  position: absolute;
+  left: 43.5%;
   font-weight: bold;
   font-size: 11px;
   cursor: pointer;

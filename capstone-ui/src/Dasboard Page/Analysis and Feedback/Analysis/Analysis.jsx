@@ -1,6 +1,8 @@
 import DashboardHeader from "../../Header and Sidebar/DashboardHeader";
 import DashboardSidebar from "../../Header and Sidebar/DashboardSidebar";
+
 import "./Analysis.css";
+
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAnalysisFunction } from "./useAnalysisFunction";
@@ -11,29 +13,35 @@ function Analysis({ speed = 10 }) {
   const { bluePercent, redPercent, showRed } = useAnalysisFunction(target, speed);
 
 useEffect(() => {
-  const fetchScore = async () => {
+  const analysisScore = async () => {
     try {
       const response = await axios.get("http://localhost:3000/api/score");
-      setTarget(response.data.score);
+      const score = response.data.score;
+      setTarget(0);
+      setTimeout(() => {
+        setTarget(score);
+      }, 200);
     } catch (error) {
       console.error("Failed to fetch score:", error);
     }
   };
 
-  fetchScore();
+  analysisScore();
 }, []);
 
   const radius = 115;
   const center = 165;
   const weight = 40;
   const fullCircle = 2 * Math.PI * radius;
-  const blueLength = (bluePercent / 100) * fullCircle;
-  const redLength = (redPercent / 100) * fullCircle;
+
+  const blueOffset = (1 - bluePercent / 100) * fullCircle;
+  const redOffset = (1 - (bluePercent + redPercent) / 100) * fullCircle;
 
   return (
     <main>
-      <DashboardSidebar />
       <DashboardHeader />
+      <DashboardSidebar />
+
       <section>
         <div className="analysis-container">
           <p>OVERALL SCORE</p>
@@ -45,6 +53,7 @@ useEffect(() => {
                 height="335"
                 style={{ transform: "rotate(-90deg)", transformOrigin: "50% 50%" }}
               >
+
                 <circle
                   stroke="#ddd"
                   strokeWidth={weight}
@@ -53,6 +62,21 @@ useEffect(() => {
                   cx={center}
                   cy={center}
                 />
+
+                {showRed && (
+                  <circle
+                    stroke="#e74c3c"
+                    strokeWidth={weight}
+                    fill="transparent"
+                    r={radius}
+                    cx={center}
+                    cy={center}
+                    strokeDasharray={fullCircle}
+                    strokeDashoffset={redOffset}
+                    style={{ transition: "stroke-dashoffset 0.5s ease-out" }}
+                  />
+                )}
+
                 <circle
                   stroke="#3b7ce9"
                   strokeWidth={weight}
@@ -60,23 +84,10 @@ useEffect(() => {
                   r={radius}
                   cx={center}
                   cy={center}
-                  strokeDasharray={`${blueLength} ${fullCircle}`}
-                  strokeDashoffset="0"
-                  style={{ transition: "stroke-dasharray 0.2s linear" }}
+                  strokeDasharray={fullCircle}
+                  strokeDashoffset={blueOffset}
+                  style={{ transition: "stroke-dashoffset 0.5s ease-out" }}
                 />
-                {showRed && (
-                  <circle
-                    stroke="#e74c3c"
-                    strokeWidth="40"
-                    fill="transparent"
-                    r={radius}
-                    cx={center}
-                    cy={center}
-                    strokeDasharray={`${redLength} ${fullCircle}`}
-                    strokeDashoffset={-blueLength}
-                    style={{ transition: "stroke-dasharray 0.2s linear" }}
-                  />
-                )}
               </svg>
 
               <div className="progress-text">

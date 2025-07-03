@@ -1,5 +1,7 @@
 import "./SignUp.css";
+
 import LogoIcon from "../../../assets/Logo.png";
+
 import { useSignUpFunction } from "./useSignUpFunction";
 
 function SignUp() {

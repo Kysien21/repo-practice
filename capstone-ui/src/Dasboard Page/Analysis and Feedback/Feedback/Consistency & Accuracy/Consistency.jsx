@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import "../Feedback.css";
+
+import { useEffect, useState } from "react";
 import { useConsistencyFunction } from "./useConsistencyFunction";
+
+import axios from "axios";
 
 function Consistency({ speed = 10 }) {
   const [target, setTarget] = useState(0);

@@ -1,8 +1,11 @@
-import { useWebsiteHeaderFunction } from "./useWebsiteHeaderFunction";
 import "./WebsiteHeader.css";
+
 import Logo from "../../assets/Logo.png";
+
 import LogIn from "../LogIn and SignUp/LogIn/LogIn";
 import SignUp from "../LogIn and SignUp/SignUp/SignUp";
+
+import { useWebsiteHeaderFunction } from "./useWebsiteHeaderFunction";
 
 function WebsiteHeader() {
   const {
