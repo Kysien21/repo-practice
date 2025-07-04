@@ -44,7 +44,7 @@
   height: 15px;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 750px) {
   .sidebar-container {
     width: 60px;
     padding-top: 90px;

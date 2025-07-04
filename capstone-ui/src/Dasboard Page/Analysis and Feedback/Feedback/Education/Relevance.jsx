@@ -1,33 +1,49 @@
 import "../Feedback.css";
-
 import { useEffect, useState } from "react";
 import { useRelevanceFunction } from "./useRelevanceFunction";
-
 import axios from "axios";
 
-function Relevance({ speed = 10 }) {
-  const [target, setTarget] = useState(0);
+function Relevance({ relevanceSpeed = 10 }) {
+  const [relevanceScore, setRelevanceScore] = useState(0);
+  const [relevanceFeedback, setRelevanceFeedback] = useState("");
 
-useEffect(() => {
-  const relevance = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/api/skill-match");
-      setTarget(response.data.score);
-    } catch (error) {
-      console.error("Failed to fetch skill match score:", error);
-    }
-  };
+  useEffect(() => {
+    const fetchRelevanceScore = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/relevance-score");
+        console.log("Fetched Relevance score:", response.data.score);
+        setRelevanceScore(response.data.score);
+      } catch (error) {
+        console.error("Failed to fetch relevance score:", error);
+      }
+    };
 
-  relevance();
-}, []);
+    fetchRelevanceScore();
+  }, []);
 
-  const { progress, getProgressColor } = useRelevanceFunction(target, speed);
+  useEffect(() => {
+    const fetchRelevanceFeedback = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/relevance-feedback");
+        setRelevanceFeedback(response.data.comment || "No feedback provided.");
+      } catch (error) {
+        console.error("Failed to fetch relevance feedback:", error);
+      }
+    };
+
+    fetchRelevanceFeedback();
+  }, []);
+
+  const {
+    relevanceProgress,
+    getRelevanceProgressColor,
+  } = useRelevanceFunction(relevanceScore, relevanceSpeed);
 
   const radius = 44;
   const center = 60;
   const stroke = 25;
   const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (progress / 100) * circumference;
+  const offset = circumference - (relevanceProgress / 100) * circumference;
 
   return (
     <section>
@@ -35,11 +51,7 @@ useEffect(() => {
         <h1>Relevance</h1>
         <div className="progress-relevance">
           <div className="relevance-circle">
-            <svg
-              width="120"
-              height="120"
-              style={{ transform: "rotate(-90deg)", transformOrigin: "50% 50%" }}
-            >
+            <svg width="120" height="120" style={{ transform: "rotate(-90deg)" }}>
               <circle
                 stroke="#ddd"
                 strokeWidth={stroke}
@@ -49,7 +61,7 @@ useEffect(() => {
                 cy={center}
               />
               <circle
-                stroke={getProgressColor()}
+                stroke={getRelevanceProgressColor()}
                 strokeWidth={stroke}
                 fill="transparent"
                 r={radius}
@@ -60,14 +72,16 @@ useEffect(() => {
                 style={{ transition: "stroke-dashoffset 0.2s linear" }}
               />
             </svg>
-            <div className="progress-num">{progress}%</div>
+            <div className="progress-num">{relevanceProgress}%</div>
           </div>
         </div>
       </div>
 
       <div className="comment-relevance-container">
         <h1>Analytics</h1>
-        <div className="relevance-comment" />
+        <div className="relevance-comment">
+          <p>{relevanceFeedback}</p>
+        </div>
       </div>
     </section>
   );

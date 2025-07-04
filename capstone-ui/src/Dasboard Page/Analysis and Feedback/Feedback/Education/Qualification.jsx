@@ -1,46 +1,57 @@
 import "../Feedback.css";
-
 import { useEffect, useState } from "react";
 import { useQualificationFunction } from "./useQualificationFunction";
-
 import axios from "axios";
 
-function Qualification({ speed = 10 }) {
-  const [target, setTarget] = useState(0);
+function Qualification({ qualificationSpeed = 10 }) {
+  const [qualificationScore, setQualificationScore] = useState(0);
+  const [qualificationFeedback, setQualificationFeedback] = useState("");
 
-useEffect(() => {
-  const qualificationScore = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/api/skill-match");
-      setTarget(response.data.score);
-    } catch (error) {
-      console.error("Failed to fetch skill match score:", error);
-    }
-  };
+  useEffect(() => {
+    const fetchQualificationScore = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/qualification-score");
+        console.log("Fetched Qualification score:", response.data.score);
+        setQualificationScore(response.data.score);
+      } catch (error) {
+        console.error("Failed to fetch qualification score:", error);
+      }
+    };
 
-  qualificationScore();
-}, []);
+    fetchQualificationScore();
+  }, []);
 
-  const { progress, getProgressColor } = useQualificationFunction(target, speed);
+  useEffect(() => {
+    const fetchQualificationFeedback = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/qualification-feedback");
+        setQualificationFeedback(response.data.comment || "No feedback provided.");
+      } catch (error) {
+        console.error("Failed to fetch qualification feedback:", error);
+      }
+    };
+
+    fetchQualificationFeedback();
+  }, []);
+
+  const {
+    qualificationProgress,
+    getQualificationProgressColor,
+  } = useQualificationFunction(qualificationScore, qualificationSpeed);
 
   const radius = 44;
   const center = 60;
   const stroke = 25;
   const circumference = 2 * Math.PI * radius;
-  const dashOffset = circumference - (progress / 100) * circumference;
+  const dashOffset = circumference - (qualificationProgress / 100) * circumference;
 
   return (
     <section>
       <div className="qualification-container">
         <h1>Qualification</h1>
-
         <div className="progress-qualification">
           <div className="qualification-circle">
-            <svg
-              width="120"
-              height="120"
-              style={{ transform: "rotate(-90deg)", transformOrigin: "50% 50%" }}
-            >
+            <svg width="120" height="120" style={{ transform: "rotate(-90deg)" }}>
               <circle
                 stroke="#ddd"
                 strokeWidth={stroke}
@@ -50,7 +61,7 @@ useEffect(() => {
                 cy={center}
               />
               <circle
-                stroke={getProgressColor()}
+                stroke={getQualificationProgressColor()}
                 strokeWidth={stroke}
                 fill="transparent"
                 r={radius}
@@ -61,14 +72,16 @@ useEffect(() => {
                 style={{ transition: "stroke-dashoffset 0.2s linear" }}
               />
             </svg>
-            <div className="progress-num">{progress}%</div>
+            <div className="progress-num">{qualificationProgress}%</div>
           </div>
         </div>
       </div>
 
       <div className="comment-qualification-container">
         <h1>Analytics</h1>
-        <div className="qualification-comment" />
+        <div className="qualification-comment">
+          <p>{qualificationFeedback}</p>
+        </div>
       </div>
     </section>
   );

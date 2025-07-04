@@ -1,28 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useConsistencyFunction(target, speed) {
-  const [progress, setProgress] = useState(0);
+export function useConsistencyFunction(consistencyTarget, consistencySpeed) {
+  const [consistencyProgress, setConsistencyProgress] = useState(0);
   const intervalRef = useRef(null);
 
   useEffect(() => {
+    setConsistencyProgress(0);
+    clearInterval(intervalRef.current);
+
     intervalRef.current = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= target) {
+      setConsistencyProgress((prev) => {
+        if (prev >= consistencyTarget) {
           clearInterval(intervalRef.current);
-          return target;
+          return consistencyTarget;
         }
         return prev + 1;
       });
-    }, speed);
+    }, consistencySpeed);
 
     return () => clearInterval(intervalRef.current);
-  }, [target, speed]);
+  }, [consistencyTarget, consistencySpeed]);
 
-  const getProgressColor = () => {
-    if (progress < 40) return "#e74c3c";
-    if (progress < 80) return "#f39c12";
+  const getConsistencyProgressColor = () => {
+    if (consistencyProgress < 40) return "#e74c3c";
+    if (consistencyProgress < 80) return "#f39c12";
     return "#2ecc71";
   };
 
-  return { progress, getProgressColor };
+  return { consistencyProgress, getConsistencyProgressColor };
 }

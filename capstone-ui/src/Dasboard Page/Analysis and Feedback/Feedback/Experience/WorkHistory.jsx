@@ -1,34 +1,48 @@
 import "../Feedback.css";
-
 import { useEffect, useState } from "react";
 import { useWorkHistoryFunction } from "./useWorkHistoryFunction";
-
 import axios from "axios";
 
+function WorkHistory({ workHistorySpeed = 10 }) {
+  const [workHistoryScore, setWorkHistoryScore] = useState(0);
+  const [workHistoryFeedback, setWorkHistoryFeedback] = useState("");
 
-function WorkHistory({ speed = 10 }) {
-  const [target, setTarget] = useState(0);
+  useEffect(() => {
+    const fetchWorkHistoryScore = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/work-history-score");
+        console.log("Fetched Work History score:", response.data.score);
+        setWorkHistoryScore(response.data.score);
+      } catch (error) {
+        console.error("Failed to fetch work history score:", error);
+      }
+    };
 
-useEffect(() => {
-  const workHistoryScore = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/api/skill-match");
-      setTarget(response.data.score);
-    } catch (error) {
-      console.error("Failed to fetch skill match score:", error);
-    }
-  };
+    fetchWorkHistoryScore();
+  }, []);
 
-  workHistoryScore();
-}, []);
+  useEffect(() => {
+    const fetchWorkHistoryFeedback = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/work-history-feedback");
+        console.log("Fetched work history feedback:", response.data.comment);
+        setWorkHistoryFeedback(response.data.comment || "No feedback provided.");
+      } catch (error) {
+        console.error("Failed to fetch work history feedback:", error);
+      }
+    };
 
-  const { progress, getProgressColor } = useWorkHistoryFunction(target, speed);
+    fetchWorkHistoryFeedback();
+  }, []);
+
+  const { workHistoryProgress, getWorkHistoryProgressColor } =
+    useWorkHistoryFunction(workHistoryScore, workHistorySpeed);
 
   const radius = 44;
   const center = 60;
   const weight = 25;
   const circumference = 2 * Math.PI * radius;
-  const dashOffset = circumference - (progress / 100) * circumference;
+  const dashOffset = circumference - (workHistoryProgress / 100) * circumference;
 
   return (
     <section>
@@ -50,7 +64,7 @@ useEffect(() => {
                 cy={center}
               />
               <circle
-                stroke={getProgressColor()}
+                stroke={getWorkHistoryProgressColor()}
                 strokeWidth={weight}
                 fill="transparent"
                 r={radius}
@@ -61,14 +75,16 @@ useEffect(() => {
                 style={{ transition: "stroke-dashoffset 0.2s linear" }}
               />
             </svg>
-            <div className="progress-num">{progress}%</div>
+            <div className="progress-num">{workHistoryProgress}%</div>
           </div>
         </div>
       </div>
 
       <div className="comment-workhistory-container">
         <h1>Analytics</h1>
-        <div className="workhistory-comment" />
+        <div className="workhistory-comment">
+          <p>{workHistoryFeedback}</p>
+        </div>
       </div>
     </section>
   );

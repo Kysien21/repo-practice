@@ -10,30 +10,30 @@ import axios from "axios";
 
 function Analysis({ speed = 10 }) {
   const [target, setTarget] = useState(0);
+
   const { bluePercent, redPercent, showRed } = useAnalysisFunction(target, speed);
 
-useEffect(() => {
-  const analysisScore = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/api/score");
-      const score = response.data.score;
-      setTarget(0);
-      setTimeout(() => {
-        setTarget(score);
-      }, 200);
-    } catch (error) {
-      console.error("Failed to fetch score:", error);
-    }
-  };
+  useEffect(() => {
+    const analysisScore = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/score");
+        const score = response.data.score;
+        setTarget(0);
+        setTimeout(() => {
+          setTarget(score);
+        }, 200);
+      } catch (error) {
+        console.error("Failed to fetch score:", error);
+      }
+    };
 
-  analysisScore();
-}, []);
+    analysisScore();
+  }, []);
 
   const radius = 115;
   const center = 165;
   const weight = 40;
   const fullCircle = 2 * Math.PI * radius;
-
   const blueOffset = (1 - bluePercent / 100) * fullCircle;
   const redOffset = (1 - (bluePercent + redPercent) / 100) * fullCircle;
 

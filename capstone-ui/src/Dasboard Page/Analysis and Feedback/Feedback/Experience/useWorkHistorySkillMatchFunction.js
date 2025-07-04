@@ -1,28 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useWorkHistorySkillMatchFunction(target, speed) {
-  const [progress, setProgress] = useState(0);
+export function useWorkHistorySkillMatchFunction(workHistorySkillMatchTarget, workHistorySkillMatchSpeed) {
+  const [workHistorySkillMatchProgress, setWorkHistorySkillMatchProgress] = useState(0);
   const intervalRef = useRef(null);
 
   useEffect(() => {
+    setWorkHistorySkillMatchProgress(0);
+    clearInterval(intervalRef.current);
+
     intervalRef.current = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= target) {
+      setWorkHistorySkillMatchProgress((prev) => {
+        if (prev >= workHistorySkillMatchTarget) {
           clearInterval(intervalRef.current);
-          return target;
+          return workHistorySkillMatchTarget;
         }
         return prev + 1;
       });
-    }, speed);
+    }, workHistorySkillMatchSpeed);
 
     return () => clearInterval(intervalRef.current);
-  }, [target, speed]);
+  }, [workHistorySkillMatchTarget, workHistorySkillMatchSpeed]);
 
-  const getProgressColor = () => {
-    if (progress < 40) return "#e74c3c";
-    if (progress < 80) return "#f39c12";
+  const getWorkHistorySkillMatchProgressColor = () => {
+    if (workHistorySkillMatchProgress < 40) return "#e74c3c";
+    if (workHistorySkillMatchProgress < 80) return "#f39c12";
     return "#2ecc71";
   };
 
-  return { progress, getProgressColor };
+  return { workHistorySkillMatchProgress, getWorkHistorySkillMatchProgressColor };
 }

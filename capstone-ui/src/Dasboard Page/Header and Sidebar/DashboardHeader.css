@@ -131,7 +131,7 @@
   transition: color 0.3s ease;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 750px) {
   .header-container {
     height: 50px;
     padding: 0 20px;

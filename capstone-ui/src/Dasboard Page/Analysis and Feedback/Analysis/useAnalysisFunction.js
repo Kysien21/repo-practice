@@ -10,7 +10,7 @@ export function useAnalysisFunction(target, speed) {
     setRedPercent(0);
     setShowRed(false);
 
-    let blueTimer = setInterval(() => {
+    const blueTimer = setInterval(() => {
       setBluePercent((current) => {
         if (current >= target) {
           clearInterval(blueTimer);
@@ -28,6 +28,7 @@ export function useAnalysisFunction(target, speed) {
       const delay = setTimeout(() => {
         setShowRed(true);
       }, 500);
+
       return () => clearTimeout(delay);
     }
   }, [bluePercent, target]);
@@ -35,19 +36,19 @@ export function useAnalysisFunction(target, speed) {
   useEffect(() => {
     if (!showRed) return;
 
-    const redTarget = 100 - target;
     const redTimer = setInterval(() => {
       setRedPercent((current) => {
-        if (current >= redTarget) {
+        const missing = 100 - target;
+        if (current >= missing) {
           clearInterval(redTimer);
-          return redTarget;
+          return missing;
         }
         return current + 1;
       });
     }, speed);
 
     return () => clearInterval(redTimer);
-  }, [showRed, target, speed]);
+  }, [showRed, speed, target]);
 
   return { bluePercent, redPercent, showRed };
 }

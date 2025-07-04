@@ -1,33 +1,49 @@
 import "../Feedback.css";
-
 import { useEffect, useState } from "react";
 import { useConsistencyFunction } from "./useConsistencyFunction";
-
 import axios from "axios";
 
-function Consistency({ speed = 10 }) {
-  const [target, setTarget] = useState(0);
+function Consistency({ consistencySpeed = 10 }) {
+  const [consistencyScore, setConsistencyScore] = useState(0);
+  const [consistencyFeedback, setConsistencyFeedback] = useState("");
 
-useEffect(() => {
-  const consistencyScore = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/api/skill-match");
-      setTarget(response.data.score);
-    } catch (error) {
-      console.error("Failed to fetch skill match score:", error);
-    }
-  };
+  useEffect(() => {
+    const fetchConsistencyScore = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/consistency-score");
+        console.log("Fetched Consistency score:", response.data.score);
+        setConsistencyScore(response.data.score);
+      } catch (error) {
+        console.error("Failed to fetch consistency score:", error);
+      }
+    };
 
-  consistencyScore();
-}, []);
+    fetchConsistencyScore();
+  }, []);
 
-  const { progress, getProgressColor } = useConsistencyFunction(target, speed);
+  useEffect(() => {
+    const fetchConsistencyFeedback = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/consistency-feedback");
+        setConsistencyFeedback(response.data.comment || "No feedback provided.");
+      } catch (error) {
+        console.error("Failed to fetch consistency feedback:", error);
+      }
+    };
+
+    fetchConsistencyFeedback();
+  }, []);
+
+  const {
+    consistencyProgress,
+    getConsistencyProgressColor,
+  } = useConsistencyFunction(consistencyScore, consistencySpeed);
 
   const radius = 44;
   const center = 60;
   const stroke = 25;
   const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (progress / 100) * circumference;
+  const offset = circumference - (consistencyProgress / 100) * circumference;
 
   return (
     <section>
@@ -35,10 +51,10 @@ useEffect(() => {
         <h1>Consistency</h1>
         <div className="progress-consistency">
           <div className="consistency-circle">
-            <svg width="120" height="120" style={{ transform: "rotate(-90deg)", transformOrigin: "50% 50%" }}>
+            <svg width="120" height="120" style={{ transform: "rotate(-90deg)" }}>
               <circle stroke="#ddd" strokeWidth={stroke} fill="transparent" r={radius} cx={center} cy={center} />
               <circle
-                stroke={getProgressColor()}
+                stroke={getConsistencyProgressColor()}
                 strokeWidth={stroke}
                 fill="transparent"
                 r={radius}
@@ -49,13 +65,15 @@ useEffect(() => {
                 style={{ transition: "stroke-dashoffset 0.2s linear" }}
               />
             </svg>
-            <div className="progress-num">{progress}%</div>
+            <div className="progress-num">{consistencyProgress}%</div>
           </div>
         </div>
       </div>
       <div className="comment-consistency-container">
         <h1>Analytics</h1>
-        <div className="consistency-comment" />
+        <div className="consistency-comment">
+          <p>{consistencyFeedback}</p>
+        </div>
       </div>
     </section>
   );

@@ -22,18 +22,22 @@ function Feedback() {
 
   const views = [
     <>
+    <h1 className="relevance-to-job-description">Relevance to Job Description</h1>
       <KeywordMatch />
       <KeywordSkillMatch />
     </>,
     <>
+    <h1 className="experience">Experience</h1>
       <WorkHistory />
       <WorkHistorySkillMatch />
     </>,
     <>
+    <h1 className="education">Education</h1>
       <Qualification />
       <Relevance />
     </>,
     <>
+    <h1 className="consistency-accuracy">Consistency & Accuracy</h1>
       <SpellingAndGrammar />
       <Consistency />
     </>

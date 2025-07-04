@@ -8,6 +8,7 @@ import Result from "./Dasboard Page/Result/Result";
 import Website from "./Landing Page/Website/Website";
 import LogIn from "./Landing Page/LogIn and SignUp/LogIn/LogIn";
 import SignUp from "./Landing Page/LogIn and SignUp/SignUp/SignUp";
+import './index.css';
 
 
 function App() {

@@ -1,28 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useQualificationFunction(target, speed) {
-  const [progress, setProgress] = useState(0);
+export function useQualificationFunction(qualificationTarget, qualificationSpeed) {
+  const [qualificationProgress, setQualificationProgress] = useState(0);
   const intervalRef = useRef(null);
 
   useEffect(() => {
+    setQualificationProgress(0);
+    clearInterval(intervalRef.current);
+
     intervalRef.current = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= target) {
+      setQualificationProgress((prev) => {
+        if (prev >= qualificationTarget) {
           clearInterval(intervalRef.current);
-          return target;
+          return qualificationTarget;
         }
         return prev + 1;
       });
-    }, speed);
+    }, qualificationSpeed);
 
     return () => clearInterval(intervalRef.current);
-  }, [target, speed]);
+  }, [qualificationTarget, qualificationSpeed]);
 
-  const getProgressColor = () => {
-    if (progress < 40) return "#e74c3c";
-    if (progress < 80) return "#f39c12";
+  const getQualificationProgressColor = () => {
+    if (qualificationProgress < 40) return "#e74c3c";
+    if (qualificationProgress < 80) return "#f39c12";
     return "#2ecc71";
   };
 
-  return { progress, getProgressColor };
+  return { qualificationProgress, getQualificationProgressColor };
 }

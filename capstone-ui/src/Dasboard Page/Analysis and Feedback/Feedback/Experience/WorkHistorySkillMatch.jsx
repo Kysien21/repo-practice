@@ -1,33 +1,50 @@
 import "../Feedback.css";
-
 import { useEffect, useState } from "react";
 import { useWorkHistorySkillMatchFunction } from "./useWorkHistorySkillMatchFunction";
-
 import axios from "axios";
 
-function WorkHistorySkillMatch({ speed = 10 }) {
-  const [target, setTarget] = useState(0);
+function WorkHistorySkillMatch({ workHistorySkillMatchSpeed = 10 }) {
+  const [workHistorySkillMatchScore, setWorkHistorySkillMatchScore] = useState(0);
+  const [workHistorySkillMatchFeedback, setworkHistorySkillMatchFeedback] = useState("");
 
-useEffect(() => {
-  const WorkHistorySkillMatch = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/api/skill-match");
-      setTarget(response.data.score);
-    } catch (error) {
-      console.error("Failed to fetch skill match score:", error);
-    }
-  };
+  useEffect(() => {
+    const fetchWorkHistorySkillMatchScore = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/work-history-skill-match");
+        console.log("Fetched work history skill match score:", response.data.score);
+        setWorkHistorySkillMatchScore(response.data.score);
+      } catch (error) {
+        console.error("Failed to fetch work history skill match score:", error);
+      }
+    };
 
-  WorkHistorySkillMatch();
-}, []);
+    fetchWorkHistorySkillMatchScore();
+  }, []);
 
-  const { progress, getProgressColor } = useWorkHistorySkillMatchFunction(target, speed);
+    useEffect(() => {
+    const fetchWorkHistorySkillMatchFeedback = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/work-history-skill-match-feedback");
+        console.log("Fetched keyword skill match feedback:", response.data.comment);
+        setworkHistorySkillMatchFeedback(response.data.comment || "No feedback provided.");
+      } catch (error) {
+        console.error("Failed to fetch keyword skill match feedback:", error);
+      }
+    };
+
+    fetchWorkHistorySkillMatchFeedback();
+  }, []);
+
+  const {
+    workHistorySkillMatchProgress,
+    getWorkHistorySkillMatchProgressColor,
+  } = useWorkHistorySkillMatchFunction(workHistorySkillMatchScore, workHistorySkillMatchSpeed);
 
   const radius = 44;
   const center = 60;
   const weight = 25;
   const circumference = 2 * Math.PI * radius;
-  const dashOffset = circumference - (progress / 100) * circumference;
+  const dashOffset = circumference - (workHistorySkillMatchProgress / 100) * circumference;
 
   return (
     <section>
@@ -49,7 +66,7 @@ useEffect(() => {
                 cy={center}
               />
               <circle
-                stroke={getProgressColor()}
+                stroke={getWorkHistorySkillMatchProgressColor()}
                 strokeWidth={weight}
                 fill="transparent"
                 r={radius}
@@ -60,7 +77,7 @@ useEffect(() => {
                 style={{ transition: "stroke-dashoffset 0.2s linear" }}
               />
             </svg>
-            <div className="progress-num">{progress}%</div>
+            <div className="progress-num">{workHistorySkillMatchProgress}%</div>
           </div>
         </div>
       </div>
@@ -68,6 +85,7 @@ useEffect(() => {
       <div className="comment-workhistoryskillmatch-container">
         <h1>Analytics</h1>
         <div className="workhistoryskillmatch-comment" />
+        <p>{workHistorySkillMatchFeedback}</p>
       </div>
     </section>
   );

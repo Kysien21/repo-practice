@@ -1,28 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useSpellingAndGrammarFunction(target, speed) {
-  const [progress, setProgress] = useState(0);
+export function useSpellingAndGrammarFunction(spellingGrammarTarget, spellingGrammarSpeed) {
+  const [spellingGrammarProgress, setSpellingGrammarProgress] = useState(0);
   const intervalRef = useRef(null);
 
   useEffect(() => {
+    setSpellingGrammarProgress(0);
+    clearInterval(intervalRef.current);
+
     intervalRef.current = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= target) {
+      setSpellingGrammarProgress((prev) => {
+        if (prev >= spellingGrammarTarget) {
           clearInterval(intervalRef.current);
-          return target;
+          return spellingGrammarTarget;
         }
         return prev + 1;
       });
-    }, speed);
+    }, spellingGrammarSpeed);
 
     return () => clearInterval(intervalRef.current);
-  }, [target, speed]);
+  }, [spellingGrammarTarget, spellingGrammarSpeed]);
 
-  const getProgressColor = () => {
-    if (progress < 40) return "#e74c3c";
-    if (progress < 80) return "#f39c12";
+  const getSpellingGrammarProgressColor = () => {
+    if (spellingGrammarProgress < 40) return "#e74c3c";
+    if (spellingGrammarProgress < 80) return "#f39c12";
     return "#2ecc71";
   };
 
-  return { progress, getProgressColor };
+  return { spellingGrammarProgress, getSpellingGrammarProgressColor };
 }

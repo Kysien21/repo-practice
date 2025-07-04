@@ -4,13 +4,13 @@
   left: 290px;
   bottom: 200px;
   width: 63rem;
-  height: 32rem;  
-  padding: 0 70px;
-  background-color: #fff;
+  height: 32rem;
+  padding-left: 70px;
+  padding-right: 70px;
+  background-color: white;
   border: 2px solid #c2bebe;
   border-radius: 10px;
 }
-
 
 .uploaded-and-result {
   display: flex;

@@ -1,28 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useRelevanceFunction(target, speed) {
-  const [progress, setProgress] = useState(0);
+export function useRelevanceFunction(relevanceTarget, relevanceSpeed) {
+  const [relevanceProgress, setRelevanceProgress] = useState(0);
   const intervalRef = useRef(null);
 
   useEffect(() => {
+    setRelevanceProgress(0);
+    clearInterval(intervalRef.current);
+
     intervalRef.current = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= target) {
+      setRelevanceProgress((prev) => {
+        if (prev >= relevanceTarget) {
           clearInterval(intervalRef.current);
-          return target;
+          return relevanceTarget;
         }
         return prev + 1;
       });
-    }, speed);
+    }, relevanceSpeed);
 
     return () => clearInterval(intervalRef.current);
-  }, [target, speed]);
+  }, [relevanceTarget, relevanceSpeed]);
 
-  const getProgressColor = () => {
-    if (progress < 40) return "#e74c3c";
-    if (progress < 80) return "#f39c12";
+  const getRelevanceProgressColor = () => {
+    if (relevanceProgress < 40) return "#e74c3c";
+    if (relevanceProgress < 80) return "#f39c12";
     return "#2ecc71";
   };
 
-  return { progress, getProgressColor };
+  return { relevanceProgress, getRelevanceProgressColor };
 }

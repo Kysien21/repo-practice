@@ -1,28 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useKeywordMatchFunction(target, speed) {
-  const [progress, setProgress] = useState(0);
+export function useKeywordMatchFunction(keywordMatchScore, keywordMatchSpeed) {
+  const [keywordMatchProgress, setKeywordMatchProgress] = useState(0);
   const intervalRef = useRef(null);
 
   useEffect(() => {
+    setKeywordMatchProgress(0);
+    clearInterval(intervalRef.current);
+
     intervalRef.current = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= target) {
+      setKeywordMatchProgress((prev) => {
+        if (prev >= keywordMatchScore) {
           clearInterval(intervalRef.current);
-          return target;
+          return keywordMatchScore;
         }
         return prev + 1;
       });
-    }, speed);
+    }, keywordMatchSpeed);
 
     return () => clearInterval(intervalRef.current);
-  }, [target, speed]);
+  }, [keywordMatchScore, keywordMatchSpeed]);
 
-  const getProgressColor = () => {
-    if (progress < 40) return "#e74c3c";
-    if (progress < 80) return "#f39c12";
+  const getKeywordProgressColor = () => {
+    if (keywordMatchProgress < 40) return "#e74c3c";
+    if (keywordMatchProgress < 80) return "#f39c12";
     return "#2ecc71";
   };
 
-  return { progress, getProgressColor };
+  return { keywordMatchProgress, getKeywordProgressColor };
 }
