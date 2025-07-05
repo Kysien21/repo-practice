@@ -1,0 +1,68 @@
+.analysis-container {
+  position: relative;
+  top: 120px;
+  left: 445px;
+  width: 45rem;
+  height: 30rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border: 2px solid #c2bebe;
+  border-radius: 10px;
+}
+
+.analysis-container p {
+  color: #133970;
+}
+
+.progress-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.analysis-circle {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progress-text {
+  position: absolute;
+  top: 153px;
+  right: 90px;
+}
+
+.progress-text p {
+  font-size: 14px;
+  text-align: center;
+  color: #133970;
+}
+
+.analysis-percentage {
+  font-weight: bold;
+  color: #133970;
+}
+
+.analysis-button {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.analysis-button a {
+  font-size: 11px;
+  color: #fff;
+  background-color: #133970;
+  border: none;
+  border-radius: 50px;
+  padding: 5px 25px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}

@@ -1,0 +1,201 @@
+.header-container {
+  background-color: #ffffff;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 35px;
+  box-shadow: 0 0 9px #d3d3d3;
+  z-index: 200;
+  transition: padding 0.3s ease, height 0.3s ease;
+}
+
+.logo-dashboard {
+  display: flex;
+  align-items: center;
+}
+
+.logo-icon {
+  width: 80px;
+  transition: width 0.3s ease;
+}
+
+.logo-dashboard .logo-name {
+  font-size: 15px;
+  color: #133970;
+  transition: font-size 0.3s ease;
+}
+
+.dashboard-navbar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: all 0.3s ease;
+}
+
+.nav-link {
+  font-size: 13px;
+  font-weight: bold;
+  color: #3b7ce9;
+  text-decoration: none;
+  transition: color 0.3s ease, font-size 0.3s ease;
+}
+
+.dashboard-navbar button {
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  background: #0000fd;
+  border: none;
+  border-radius: 50px;
+  padding: 5px 15px;
+  cursor: pointer;
+  transition: background 0.3s ease, padding 0.3s ease;
+}
+
+.dashboard-profile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.profile-icon {
+  width: 38px;
+  transition: width 0.3s ease;
+}
+
+.tooltip-icon {
+  width: 10px;
+  cursor: pointer;
+  transition: width 0.3s ease;
+}
+
+.small-modal {
+  position: absolute;
+  top: 55px;
+  right: -10px;
+  background-color: #f6efef;
+  border: 1px solid #1d3989;
+  border-radius: 8px;
+  width: 100px;
+  padding: 0.4rem 0;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.small-modal.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.modal-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.modal-menu li {
+  padding: 7px;
+}
+
+.modal-menu a {
+  display: block;
+  font-size: 14px;
+  color: #1d3989;
+  text-decoration: none;
+  padding: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.modal-menu a:hover {
+  background-color: #e0e0e0;
+}
+
+/* Responsive */
+.navbar-toggle {
+  display: none;
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: #3b7ce9;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+@media (max-width: 750px) {
+  .header-container {
+    height: 50px;
+    padding: 0 20px;
+  }
+
+  .logo-icon {
+    width: 50px;
+  }
+
+  .logo-dashboard .logo-name {
+    font-size: 10px;
+  }
+
+  .navbar-toggle {
+    display: block;
+  }
+
+  .dashboard-navbar {
+    display: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: absolute;
+    top: 60px;
+    right: 15px;
+    background-color: white;
+    padding: 10px 15px;
+    box-shadow: 0 2px 8px #00000026;
+    z-index: 1000;
+    gap: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .dashboard-navbar > * {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+
+  .dashboard-navbar.open {
+    display: flex;
+  }
+
+  .nav-link {
+    font-size: 10px;
+  }
+
+  .dashboard-navbar button {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+
+  .dashboard-profile {
+    gap: 10px;
+  }
+
+  .profile-icon {
+    width: 30px;
+  }
+
+  .tooltip-icon {
+    width: 8px;
+  }
+}
+
+
