@@ -16,6 +16,15 @@ const adminRoute = require('./routes/admin');
 
 require('dotenv').config();
 
+const fs = require('fs');
+
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+    console.log('📁 uploads folder created automatically');
+}
+
+
 const app = express()
 const PORT = process.env.PORT || 3000;
 
@@ -48,15 +57,15 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 // Routes
 app.use('/', adminRoute)
 
-app.use('/', signupRoute)
+app.use('/api', signupRoute)
 
-app.use('/', loginRoute)
+app.use('/api', loginRoute)
 
-app.use('/', uploadRoute)
+app.use('/api', uploadRoute)
 
-app.use('/', analysisRoute)
+app.use('/api', analysisRoute)
 
-app.use('/', resultRoute)
+app.use('/api', resultRoute)
 
 
 //mongodb

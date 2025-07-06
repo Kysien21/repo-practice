@@ -15,22 +15,32 @@ exports.analyzeResume = async(req, res) => {
 
     try {
         const prompt = `
-You are an AI resume analyzer. Compare the resume to the job description.
+You are an advanced resume analysis AI.
 
-Return this as JSON:
+Given a RESUME and JOB DESCRIPTION, perform the following tasks:
+
+1. Analyze the match between resume and job description.
+2. Return structured feedback:
+   - overallScore (0-100)
+   - sectionScores: { Skills, Experience, Education }
+   - missingSkills: list of specific skills missing
+   - missingPhrases: important phrases or responsibilities not mentioned
+   - feedback: constructive suggestions for improvement
+   - optimizedResume: a rewritten, improved version of the resume
+
+Respond only in **valid JSON** like this:
 {
-  "overallScore": number (0-100),
+  "overallScore": 86,
   "sectionScores": {
-    "Skills": number,
-    "Experience": number,
-    "Education": number
+    "Skills": 80,
+    "Experience": 90,
+    "Education": 70
   },
-  "missingSkills": [ "string", "string", ... ],
-  "missingPhrases": [ "string", "string", ... ],
-  "feedback": [ "string", "string", ... ]
+  "missingSkills": ["Docker", "Node.js"],
+  "missingPhrases": ["collaborated with cross-functional teams"],
+  "feedback": ["Add more relevant experience", "Highlight leadership in tech projects"],
+  "optimizedResume": "Optimized resume text here..."
 }
-
-Only return valid JSON.
 
 Resume:
 """${resumeText}"""
@@ -41,8 +51,9 @@ Job Description:
 
 
 
+
         const completion = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
+            model: "gpt-4",
             messages: [{ role: "user", content: prompt }],
         });
 
@@ -58,15 +69,18 @@ Job Description:
             });
         }
 
-        // ✅ Save result to MongoDB
         await Result.create({
             userId: req.session.user._id,
-            resumeText,
+            optimizedResume: analysis.optimizedResume, // ✅ Save optimized version
             jobDescription,
             overallScore: analysis.overallScore,
             sectionScores: analysis.sectionScores,
             feedback: analysis.feedback,
+            missingSkills: analysis.missingSkills,
+            missingPhrases: analysis.missingPhrases,
+            createdAt: new Date()
         });
+
 
         res.json({
             message: "✅ Resume analyzed successfully",

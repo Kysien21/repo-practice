@@ -31,7 +31,7 @@ const upload = multer({
     storage: storage,
     fileFilter: fileFilter
 });
-router.post('/api/upload', upload.single('resume'), uploadcontroller.uploadResume)
+router.post('/upload', upload.single('resume'), uploadcontroller.uploadResume)
 
 
 module.exports = router;

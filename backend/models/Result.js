@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const resultSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: 'User' },
-    resumeText: String,
+    optimizedResume: { type: String, required: true }, // ✅ Save this instead
     jobDescription: String,
     overallScore: Number,
     sectionScores: {
@@ -11,6 +11,8 @@ const resultSchema = new Schema({
         Experience: Number,
         Education: Number
     },
+    missingSkills: [String], // ✅ add if needed
+    missingPhrases: [String], // ✅ add if needed
     feedback: [String],
     createdAt: { type: Date, default: Date.now }
 });
