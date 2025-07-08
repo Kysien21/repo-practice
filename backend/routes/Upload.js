@@ -16,14 +16,14 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = function(req, file, cb) {
-    const fileTypes = /pdf|doc|docx/;
+    const fileTypes = /pdf|docx/;
     const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
     const mimeType = fileTypes.test(file.mimetype);
 
     if (extName && mimeType) {
         cb(null, true);
     } else {
-        cb(new Error('Only .pdf, .doc, and .docx files are allowed'), false);
+        cb(new Error('Only .pdf and .docx files are allowed'), false);
     }
 };
 

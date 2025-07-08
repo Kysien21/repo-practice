@@ -1,59 +1,50 @@
-const fs = require('fs'); // ✅ FIXED
-const path = require('path');
-const pdfParse = require('pdf-parse');
-const Result = require('../models/Result');
+const fs = require("fs");
+const pdfParse = require("pdf-parse");
+const mammoth = require("mammoth");
 
 exports.uploadResume = async(req, res) => {
-    if (!req.session.user) {
-        return res.status(401).json({ message: 'Not authenticated. Please login first.' });
-    }
-
-    if (!req.file) {
-        return res.status(400).json({ message: 'No file uploaded' });
-    }
-
-    const filePath = req.file.path;
-    console.log("✅ Received file:", req.file);
-
     try {
-        const dataBuffer = fs.readFileSync(filePath);
-        const pdfData = await pdfParse(dataBuffer);
-        const resumeText = pdfData.text.toLowerCase();
+        const file = req.file;
+        const jobDescription = req.body.jobDescription;
 
-        const jobDescription = (req.body.jobDescription || '').toLowerCase();
-        if (!jobDescription.trim()) {
-            return res.status(400).json({ message: 'Job description is required.' });
+        if (!file || !jobDescription) {
+            return res.status(400).json({ success: false, message: "Missing file or job description." });
         }
 
-        console.log("✅ Received jobDescription:", jobDescription);
+        let resumeText = "";
 
-        // const score = computeMatchScore(resumeText, jobDescription);
+        // Handle PDF
+        if (file.mimetype === "application/pdf") {
+            const dataBuffer = fs.readFileSync(file.path);
+            const data = await pdfParse(dataBuffer);
+            resumeText = data.text;
+        }
 
-        // const result = new Result({
-        //     userId: req.session.user._id,
-        //     score,
-        //     jobDescription,
-        //     createdAt: new Date(),
-        // });
+        // Handle DOCX
+        else if (file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+            const result = await mammoth.extractRawText({ path: file.path });
+            resumeText = result.value;
+        }
 
-        //await result.save();
+        // Handle unsupported formats
+        else if (file.mimetype === "application/msword") {
+            return res.status(400).json({ success: false, message: "DOC format not supported. Use PDF or DOCX." });
+        }
 
+        // Delete file after extraction
+        fs.unlinkSync(file.path);
+
+        // Return extracted text to frontend
         res.status(200).json({
-            message: '✅ Resume parsed successfully',
-            resumeText,
-            jobDescription,
             success: true,
+            message: "Upload Successful",
+            resumeText,
         });
-    } catch (err) {
-        console.error('❌ Error processing resume:', err);
-        res.status(500).json({ message: 'Failed to process resume', error: err.message });
+    } catch (error) {
+        console.error("Upload Error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Server error during file upload.",
+        });
     }
 };
-
-// function computeMatchScore(resumeText, jobDesc) {
-//     const resumeWords = resumeText.split(/\s+/);
-//     const descWords = jobDesc.split(/\s+/);
-//     const matchCount = descWords.filter(word => resumeWords.includes(word)).length;
-//     const score = Math.round((matchCount / descWords.length) * 100);
-//     return score || 0;
-// }
