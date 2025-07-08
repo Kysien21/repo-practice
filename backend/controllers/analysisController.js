@@ -1,6 +1,7 @@
 require('dotenv').config();
 const OpenAI = require('openai');
-const Result = require('../models/Result'); // ✅ import model
+const Result = require('../models/Result');
+const Feedback = require('../models/Feedback');
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -9,37 +10,43 @@ const openai = new OpenAI({
 exports.analyzeResume = async(req, res) => {
     const { resumeText, jobDescription } = req.body;
 
+    // ✅ Check kung naa bay resume ug job description
     if (!resumeText || !jobDescription) {
         return res.status(400).json({ message: "Both resume and job description are required." });
     }
 
     try {
+        // ✨ Prompt para sa AI nga mo-analyze sa resume base sa job description
+        // ⚠️ Gi-ingnan ang AI nga ayaw hilabti ang personal info
         const prompt = `
 You are an advanced resume analysis AI.
 
-Given a RESUME and JOB DESCRIPTION, perform the following tasks:
+Analyze the RESUME compared to the JOB DESCRIPTION. Focus ONLY on the professional sections:
+- Skills
+- Work Experience
+- Education
+- Grammar and consistency
 
-1. Analyze the match between resume and job description.
-2. Return structured feedback:
-   - overallScore (0-100)
-   - sectionScores: { Skills, Experience, Education }
-   - missingSkills: list of specific skills missing
-   - missingPhrases: important phrases or responsibilities not mentioned
-   - feedback: constructive suggestions for improvement
-   - optimizedResume: a rewritten, improved version of the resume
+⚠️ Do NOT modify or include personal information (name, address, contact, etc.) in the optimized version.
 
-Respond only in **valid JSON** like this:
+Return this JSON format:
 {
-  "overallScore": 86,
+  "overallScore": 85,
   "sectionScores": {
-    "Skills": 80,
+    "RelevanceToJob": 80,
     "Experience": 90,
-    "Education": 70
+    "Education": 70,
+    "ConsistencyAccuracy": 85
   },
   "missingSkills": ["Docker", "Node.js"],
-  "missingPhrases": ["collaborated with cross-functional teams"],
-  "feedback": ["Add more relevant experience", "Highlight leadership in tech projects"],
-  "optimizedResume": "Optimized resume text here..."
+  "missingPhrases": ["cross-functional collaboration"],
+  "feedback": {
+    "relevanceToJob": { "skillMatch": 78, "keywordMatch": 80 },
+    "experience": { "workHistory": 82, "workHistorySkillMatch": 75 },
+    "education": { "qualification": 65, "relevance": 70 },
+    "consistencyAccuracy": { "spellingGrammar": 88, "consistency": 90 }
+  },
+  "optimizedResume": "Rewritten version of the resume here, without changing personal info"
 }
 
 Resume:
@@ -49,11 +56,9 @@ Job Description:
 """${jobDescription}"""
 `;
 
-
-
-
+        // 🤖 Tawagon ang OpenAI API gamit ang GPT-4
         const completion = await openai.chat.completions.create({
-            model: "gpt-4",
+            model: "gpt-4o",
             messages: [{ role: "user", content: prompt }],
         });
 
@@ -61,6 +66,7 @@ Job Description:
 
         let analysis;
         try {
+            // 📦 I-parse ang JSON response gikan sa AI
             analysis = JSON.parse(resultText);
         } catch (parseErr) {
             return res.status(500).json({
@@ -69,22 +75,35 @@ Job Description:
             });
         }
 
-        await Result.create({
+        // 📝 I-save ang resulta (summary) sa Result collection
+        const result = await Result.create({
             userId: req.session.user._id,
-            optimizedResume: analysis.optimizedResume, // ✅ Save optimized version
+            resumeText, // ✅ Original nga extracted text
+            optimizedResume: analysis.optimizedResume, // ✅ Gi-optimize nga resume
             jobDescription,
             overallScore: analysis.overallScore,
             sectionScores: analysis.sectionScores,
-            feedback: analysis.feedback,
             missingSkills: analysis.missingSkills,
             missingPhrases: analysis.missingPhrases,
+            feedback: analysis.feedback,
             createdAt: new Date()
         });
 
+        // 📊 I-save ang detailed feedback sa laing collection (Feedback)
+        await Feedback.create({
+            userId: req.session.user._id,
+            relevanceToJob: analysis.feedback.relevanceToJob,
+            experience: analysis.feedback.experience,
+            education: analysis.feedback.education,
+            consistencyAccuracy: analysis.feedback.consistencyAccuracy,
+            createdAt: new Date()
+        });
 
+        // ✅ Ibalik sa frontend ang tanang result
         res.json({
             message: "✅ Resume analyzed successfully",
             ...analysis,
+            resumeText // Para makita sa frontend ang original text
         });
 
     } catch (error) {

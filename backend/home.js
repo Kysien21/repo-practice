@@ -10,6 +10,7 @@ const loginRoute = require('./routes/login');
 const signupRoute = require('./routes/signup');
 const uploadRoute = require('./routes/upload');
 const analysisRoute = require('./routes/analysis');
+const feedbackRoute = require('./routes/feedback');
 const resultRoute = require('./routes/result');
 const adminRoute = require('./routes/admin');
 
@@ -66,6 +67,8 @@ app.use('/api', uploadRoute)
 app.use('/api', analysisRoute)
 
 app.use('/api', resultRoute)
+
+app.use('api', feedbackRoute)
 
 
 //mongodb
