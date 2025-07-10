@@ -3,11 +3,11 @@ const bcrypt = require('bcrypt');
 
 exports.signup = async(req, res) => {
     const { First_name, Last_name, Mobile_No, Email_Address, Password, Confirm_Password, agreeToTerms } = req.body
-
+        //sign up 
     if (!First_name || !Last_name || !Mobile_No || !Email_Address || !Password || !Confirm_Password) {
         return res.status(400).json({ message: "All fields are required and terms must be accepted" })
     }
-
+    // kailangan pareha ang password og confirm password
     if (Password !== Confirm_Password) {
         return res.status(400).json({ message: 'Passwords do not match' })
     }

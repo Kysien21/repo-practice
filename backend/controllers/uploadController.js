@@ -15,6 +15,7 @@ exports.uploadResume = async(req, res) => {
 
         // Handle PDF
         if (file.mimetype === "application/pdf") {
+            console.log('pdf imong file...')
             const dataBuffer = fs.readFileSync(file.path);
             const data = await pdfParse(dataBuffer);
             resumeText = data.text;
@@ -22,12 +23,14 @@ exports.uploadResume = async(req, res) => {
 
         // Handle DOCX
         else if (file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+            console.log('docx imong file...')
             const result = await mammoth.extractRawText({ path: file.path });
             resumeText = result.value;
         }
 
         // Handle unsupported formats
         else if (file.mimetype === "application/msword") {
+            console.log('kailangan pdf ra og docx')
             return res.status(400).json({ success: false, message: "DOC format not supported. Use PDF or DOCX." });
         }
 

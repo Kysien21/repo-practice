@@ -16,8 +16,8 @@ exports.analyzeResume = async(req, res) => {
     }
 
     try {
-        // ✨ Prompt para sa AI nga mo-analyze sa resume base sa job description
-        // ⚠️ Gi-ingnan ang AI nga ayaw hilabti ang personal info
+        // Prompt para sa AI nga mo-analyze sa resume base sa job description
+        // Gi-ingnan ang AI nga ayaw hilabti ang personal info
         const prompt = `
 You are an advanced resume analysis AI.
 
@@ -56,7 +56,7 @@ Job Description:
 """${jobDescription}"""
 `;
 
-        // 🤖 Tawagon ang OpenAI API gamit ang GPT-4
+        // Tawagon ang OpenAI API gamit ang GPT-4o
         const completion = await openai.chat.completions.create({
             model: "gpt-4o",
             messages: [{ role: "user", content: prompt }],
@@ -108,6 +108,7 @@ Job Description:
 
     } catch (error) {
         console.error("❌ Error from OpenAI:", error.message || error);
-        res.status(500).json({ message: "AI analysis failed", error });
+        console.log("dili mo gana imo api waa ka")
+        res.status(500).json({ message: "failed, Try Again Later", error });
     }
 };
