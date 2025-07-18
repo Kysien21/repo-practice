@@ -1,11 +1,11 @@
 require('dotenv').config();
-const OpenAI = require('openai');
+const Anthropic = require('anthropic');
 const Result = require('../models/Result');
 const Feedback = require('../models/Feedback');
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
+// const anthropic = new Anthropic({
+//     apiKey: process.env.ANTHROPIC_API_KEY,
+// });
 
 exports.analyzeResume = async(req, res) => {
     const { resumeText, jobDescription } = req.body;
@@ -56,13 +56,20 @@ Job Description:
 """${jobDescription}"""
 `;
 
-        // Tawagon ang OpenAI API gamit ang GPT-4o
-        const completion = await openai.chat.completions.create({
-            model: "gpt-4o",
-            messages: [{ role: "user", content: prompt }],
-        });
-
-        const resultText = completion.choices[0].message.content;
+        // Tawagon ang API
+        // const response = await anthropic.messages.create({
+        //     model: 'claude-3.5-sonnet-20240606',
+        //     max_tokens: 1024,
+        //     temperature: 0.7,
+        //     messages: [{
+        //         role: 'user',
+        //         content: [{
+        //             type: 'text',
+        //             text: "Analyze the resume and job description as per the prompt.",
+        //         }]
+        //     }]
+        // });
+        const resultText = response.content[0].text;
 
         let analysis;
         try {

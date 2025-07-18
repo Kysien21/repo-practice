@@ -16,8 +16,9 @@ exports.uploadResume = async(req, res) => {
         // Handle PDF
         if (file.mimetype === "application/pdf") {
             console.log('pdf imong file...')
-            const dataBuffer = fs.readFileSync(file.path);
-            const data = await pdfParse(dataBuffer);
+            const data = await pdfParse(file.buffer); // ✅ from memory
+            // const dataBuffer = fs.readFileSync(file.path);
+            // const data = await pdfParse(dataBuffer);
             resumeText = data.text;
         }
 

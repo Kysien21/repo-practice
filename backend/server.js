@@ -8,7 +8,7 @@ const multer = require('multer')
 
 const loginRoute = require('./routes/login');
 const signupRoute = require('./routes/signup');
-const uploadRoute = require('./routes/upload');
+const uploadRoute = require('./routes/Upload');
 const analysisRoute = require('./routes/analysis');
 const feedbackRoute = require('./routes/feedback');
 const resultRoute = require('./routes/result');
@@ -69,6 +69,25 @@ app.use('/api', analysisRoute)
 app.use('/api', resultRoute)
 
 app.use('api', feedbackRoute)
+
+//landingpage
+
+const How = require('./routes/landingpages/howitworks')
+const Price = require('./routes/landingpages/pricing')
+const Contact = require('./routes/landingpages/contactUs');
+
+app.use('/', How)
+app.use('/', Price)
+app.use('/', Contact)
+
+//user interface
+const homeRoute = require('./routes/userInterface/home')
+const aboutRoute = require('./routes/userInterface/about')
+const contactRoute = require('./routes/userInterface/contacts')
+
+app.use('/', homeRoute)
+app.use('/', aboutRoute)
+app.use('/', contactRoute)
 
 
 //mongodb
